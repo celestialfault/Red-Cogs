@@ -15,12 +15,6 @@ class UserProfiles:
         self.bot = bot
         self.users_loc = "data/userprofiles/users.json"
         self.users = dataIO.load_json(self.users_loc)
-        self.ignored_domains = [
-            "adf.ly",
-            "bit.ly",
-            "goo.gl",
-            "bitly.com"
-        ]
 
     def verify_user_data(self, user):
         if user.id not in self.users:
@@ -308,11 +302,8 @@ class UserProfiles:
                 await self.bot.say("That doesn't seem like a valid website URL.")
                 return
         # silently ignore adfly urls
-        if webmatch not in self.ignored_domains:
-            self.users[ctx.message.author.id].update({ "website": website, "websitename": name })
-            self.save_json()
-        else:
-            print("[UserProfiles] Silently ignoring attempted website link to domain {} (full URL: {})".format(webmatch, website))
+        self.users[ctx.message.author.id].update({ "website": website, "websitename": name })
+        self.save_json()
         await self.bot.say("✅ Updated your website to:\n```\n{} (displayed as {})\n```".format(website, name))
 
     @user.command(pass_context=True, name="country")

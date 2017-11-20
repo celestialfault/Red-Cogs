@@ -46,16 +46,12 @@ class Warnings:
     # ----- Internals -----
     #
 
-    async def mod_log(self, server: discord.Server, **args):
+    async def mod_log(self, server: discord.Server, user: discord.User, moderator: discord.User, reason: str, action: bool=False):
         """
         This is a somewhat terrible workaround for the Mod cog not properly supporting custom mod-log cases.
 
         You probably shouldn't use this.
         """
-        user = args.get('user')
-        moderator = args.get('moderator')
-        reason = args.get('reason', 'No reason specified')
-        action = args.get('action', False)
         # Check for the existance of the mod cog
         mod_cog = self.bot.get_cog('Mod')
         if not mod_cog:
@@ -93,7 +89,7 @@ class Warnings:
 
         await self.bot.send_message(mod_channel, embed=embed)
 
-    async def send_message(self, server : discord.Server, user : discord.User, moderator : discord.User, reason : str, automated : bool = False, action : str = None):
+    async def send_message(self, server: discord.Server, user: discord.User, moderator: discord.User, reason: str, automated: bool=False, action: str=None):
         """
         [Internal API] Sends a private warning message to a user
 
@@ -125,7 +121,7 @@ class Warnings:
     # ------- API -------
     #
 
-    async def get_warning_count(self, server : discord.Server, user : discord.User):
+    async def get_warning_count(self, server: discord.Server, user: discord.User):
         """
         Returns the specified user's warning count in the specified server
         """
@@ -135,7 +131,7 @@ class Warnings:
             self.warnings[server.id][user.id] = []
         return len(self.warnings[server.id][user.id])
 
-    async def get_warnings(self, server : discord.Server, user : discord.User, paginate : bool = False):
+    async def get_warnings(self, server: discord.Server, user: discord.User, paginate: bool=False):
         """
         Gets a user's warnings
 
@@ -157,7 +153,7 @@ class Warnings:
             data = self.warnings[server.id][user.id]
         return data
 
-    async def add_warning(self, server : discord.Server, user : discord.Member, moderator : discord.User, reason : str, automated : bool = False):
+    async def add_warning(self, server: discord.Server, user: discord.Member, moderator: discord.User, reason: str, automated: bool = False):
         """
         Adds a warning to a user in the specified server
 
@@ -210,7 +206,7 @@ class Warnings:
         else:
             return "warned"
 
-    async def remove_warning(self, server : discord.Server, user : discord.User, warning : int):
+    async def remove_warning(self, server: discord.Server, user: discord.User, warning: int):
         """Removes a specific warning from a user"""
         if server.id not in self.warnings or user.id not in self.warnings[server.id] or len(self.warnings[server.id][user.id]) == 0:
             raise ValueError("That user hasn't been warned yet")
@@ -221,7 +217,7 @@ class Warnings:
         del self.warnings[server.id][user.id][warning - 1]
         self.save_json()
 
-    async def clear_warnings(self, server : discord.Server, user : discord.User, moderator : discord.User):
+    async def clear_warnings(self, server: discord.Server, user: discord.User, moderator: discord.User):
         """Clears warnings for a user"""
         if server.id not in self.warnings or user.id not in self.warnings[server.id]:
             raise ValueError("That user hasn't been warned yet")
@@ -232,7 +228,7 @@ class Warnings:
     # ------- [p]warn / [p]warnings / [p]warning -------
     #
 
-    def is_mod(self, user : discord.Member, server : discord.Server):
+    def is_mod(self, user: discord.Member, server: discord.Server):
         if int(user.id) == int(server.owner.id):
             return True
         sadmin = settings.get_server_admin(server)
@@ -245,7 +241,7 @@ class Warnings:
 
     @commands.group(pass_context=True, invoke_without_command=True, no_pm=True, aliases=["warnings", "warning"])
     @checks.mod_or_permissions(manage_messages=True)
-    async def warn(self, ctx, user : discord.User, *reason : str):
+    async def warn(self, ctx, user: discord.User, *reason: str):
         """Gives a user a warning"""
         if ctx.message.server.id not in self.settings:
             self.settings[ctx.message.server.id] = { "kick": 0, "ban": 0, "delete_message_days": 0 }
@@ -273,7 +269,7 @@ class Warnings:
         await self.bot.say(embed=embed)
 
     @warn.command(pass_context=True, no_pm=True, name="list")
-    async def warn_list(self, ctx, user : discord.User = None, page : int = 1):
+    async def warn_list(self, ctx, user: discord.User=None, page: int=1):
         """Gets the list of warnings for a user"""
         server = ctx.message.server
         if user is None:
@@ -305,7 +301,7 @@ class Warnings:
 
     @warn.command(pass_context=True, no_pm=True, name="clear")
     @checks.mod_or_permissions(manage_messages=True)
-    async def warn_clear(self, ctx, user : discord.User):
+    async def warn_clear(self, ctx, user: discord.User):
         """Clears all warnings on record for the specified user"""
         amount = len(self.warnings[ctx.message.server.id][user.id])
         await self.clear_warnings(server=ctx.message.server, user=user, moderator=ctx.message.author)
@@ -314,7 +310,7 @@ class Warnings:
 
     @warn.command(pass_context=True, no_pm=True, name="remove", aliases=["delete"])
     @checks.mod_or_permissions(manage_messages=True)
-    async def delwarn(self, ctx, user : discord.User, warning : int):
+    async def delwarn(self, ctx, user: discord.User, warning: int):
         """Removes a single warning from a user"""
         if warning < 1:
             await self.bot.say("Warning ID cannot be less than one!")
@@ -364,7 +360,7 @@ class Warnings:
 
     @warnset.command(pass_context=True, no_pm=True, name="kick", aliases=["autokick"])
     @checks.admin_or_permissions(administrator=True)
-    async def warnset_kick(self, ctx, warnings : int = 0):
+    async def warnset_kick(self, ctx, warnings: int=0):
         """Set the amount of warnings needed to automatically kick"""
         if warnings < 0:
             await self.bot.say("Warnings amount must be either one warning, or zero to disable")
@@ -378,7 +374,7 @@ class Warnings:
 
     @warnset.command(pass_context=True, no_pm=True, name="ban", aliases=["autoban"])
     @checks.admin_or_permissions(administrator=True)
-    async def warnset_ban(self, ctx, warnings : int = 0):
+    async def warnset_ban(self, ctx, warnings: int=0):
         """Set the amount of warnings needed to automatically ban"""
         if warnings < 0:
             await self.bot.say("Warnings amount must be either one warning, or zero to disable")
@@ -392,7 +388,7 @@ class Warnings:
 
     @warnset.command(pass_context=True, no_pm=True, name="delete")
     @checks.admin_or_permissions(administrator=True)
-    async def warnset_ban_delete(self, ctx, days : int = 0):
+    async def warnset_ban_delete(self, ctx, days: int=0):
         """Set how many days worth of messages should be deleted upon autobanning"""
         if days < 0 or days > 7:
             await self.bot.say("The amount of days must be between zero and seven days")

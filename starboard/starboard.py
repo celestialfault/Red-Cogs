@@ -117,7 +117,7 @@ class Starboard:
             db.users.insert_one(userstats)
         return userstats
 
-    async def update_star_statistic(self, starred_user: discord.User, starred_by: discord.User, message: discord.Message, increment: bool = True):
+    async def update_star_statistic(self, starred_user: discord.User, starred_by: discord.User, message: discord.Message, increment: bool=True):
         """
         Increment or decrement star statistics for the specified users
 
@@ -285,7 +285,7 @@ class Starboard:
 
         await self.bot.send_message(mod_channel, embed=embed)
 
-    async def mod_log_blacklist(self, server: discord.Server, user: discord.User, moderator: discord.User, act: bool, reason: str = None):
+    async def mod_log_blacklist(self, server: discord.Server, user: discord.User, moderator: discord.User, act: bool, reason: str=None):
         mod_channel = await self.get_mod_log(server)
         if not mod_channel:
             return
@@ -448,7 +448,7 @@ class Starboard:
             await send_cmd_help(ctx)
 
     @_starboard.command(name='stats', pass_context=True, no_pm=True)
-    async def _starboard_stats(self, ctx, user: discord.User = None):
+    async def _starboard_stats(self, ctx, user: discord.User=None):
         """
         Get starboard statistics for the message author, or a specified user
         """
@@ -468,7 +468,7 @@ class Starboard:
 
     @_starboard.command(name='channel', pass_context=True, no_pm=True)
     @checks.admin_or_permissions(manage_channels=True)
-    async def _starboard_channel(self, ctx, channel: discord.Channel = None):
+    async def _starboard_channel(self, ctx, channel: discord.Channel=None):
         """
         Set the server's starboard channel
         """
@@ -552,7 +552,7 @@ class Starboard:
 
     @_starboard_blacklist.command(name='add', pass_context=True, no_pm=True)
     @checks.admin_or_permissions(administrator=True)
-    async def _blacklist_add(self, ctx, user: discord.User, *, reason: str = None):
+    async def _blacklist_add(self, ctx, user: discord.User, *, reason: str=None):
         """
         Add a user to the server's Starboard blacklist.
         """
@@ -573,7 +573,7 @@ class Starboard:
 
     @_starboard_blacklist.command(name='remove', aliases=['rm'], pass_context=True, no_pm=True)
     @checks.admin_or_permissions(administrator=True)
-    async def _blacklist_rm(self, ctx, user: discord.User, *, reason: str = None):
+    async def _blacklist_rm(self, ctx, user: discord.User, *, reason: str=None):
         """
         Remove a user from the server's Starboard blacklist.
         """
@@ -630,7 +630,7 @@ class Starboard:
         await self.bot.say("```python\n{}```".format(serv))
 
     @_starboard_debug.command(name='isblacklisted', pass_context=True)
-    async def _starboard_isblacklisted(self, ctx, user: discord.User, serverid: int = None):
+    async def _starboard_isblacklisted(self, ctx, user: discord.User, serverid: int=None):
         """
         Returns a bool value of whether or not the specified user is blacklisted in the server specified
         """

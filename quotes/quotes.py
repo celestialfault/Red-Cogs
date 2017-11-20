@@ -11,7 +11,6 @@ from random import choice as randchoice
 from random import randint
 
 class Quotes:
-    # TODO: Rewrite this entire thing so it's not a giant mess
     def __init__(self, bot):
         self.bot = bot
         self.quotes = fileIO("data/quotes/quotes.json", "load")
