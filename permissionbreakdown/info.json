@@ -1,0 +1,7 @@
+{
+    "AUTHOR" : "odinair",
+    "NAME" : "permissions",
+    "SHORT" : "Get a breakdown of a user's permissions",
+    "DESCRIPTION" : "Get a breakdown of a user's permissions (channel overwrites included!)",
+    "TAGS" : ["utilities"]
+}

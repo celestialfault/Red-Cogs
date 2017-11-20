@@ -1,0 +1,8 @@
+{
+    "AUTHOR" : "odinair",
+    "NAME" : "starboard",
+    "SHORT" : "The poor man's channel pin",
+    "DESCRIPTION" : "The poor man's channel pin. Requires pymongo to function.",
+    "INSTALL_MSG" : "**This cog requires pymongo ('pip3 install pymongo') to function!**",
+    "TAGS" : ["fun", "starboard"]
+}

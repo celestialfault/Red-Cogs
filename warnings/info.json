@@ -1,0 +1,7 @@
+{
+    "AUTHOR" : "odinair",
+    "NAME" : "warnings",
+    "SHORT" : "Warn misbehaving users",
+    "DESCRIPTION" : "Warn misbehaving users, with optional automatic punishments",
+    "TAGS" : ["moderation"]
+}
