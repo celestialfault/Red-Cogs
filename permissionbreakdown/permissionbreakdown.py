@@ -57,7 +57,7 @@ class PermissionsBreakdown:
             if perm == permission:
                 return overwrite
 
-    @commands.command(name="permissionbreakdown", aliases=["permissions", "perms"], pass_context=True)
+    @commands.group(name="permissionbreakdown", aliases=["permissions", "perms"], pass_context=True, invoke_without_command=True)
     async def _permissionbreakdown(self, ctx, user: discord.User = None, channel: discord.Channel = None, page: int = 1):
         """Returns a breakdown of your (or the specified user)'s permissions.
 
@@ -210,6 +210,56 @@ class PermissionsBreakdown:
             embed.set_footer(text="Page {} out of {}".format(page, ceil(len(role_permissions) / 4)))
 
         await self.bot.say(embed=msg)
+
+    @_permissionbreakdown.command(name="role", pass_context=True)
+    async def _permissionbreakdown_role(self, ctx, role: discord.Role, channel: discord.Channel=None):
+        """
+        Returns the list of permissions a role has
+
+        If channel is specified, the channel's overwrites are also factored in
+        """
+        embed = discord.Embed(
+            colour=role.colour,
+            title="Permissions for role {}".format(role.name)
+        )
+
+        if role.permissions.administrator is True:
+            embed.description = "This role has the Administrator permission, and thus posesses all permissions."
+            return await self.bot.say(embed=embed)
+
+        permissions = {}
+        roleperms = role.permissions
+        for perm, grants in roleperms:
+            cr = await self.get_overwrite(channel, role, perm)
+            permissions[perm] = {
+                "granted": grants if cr is None else cr,
+                "channelOverwrite": cr
+            }
+
+        channelOverwriteBlock = []
+        permissionsBlock = []
+
+        for perm in permissions:
+            data = permissions[perm]
+            if data["channelOverwrite"] is not None:
+                channelOverwriteBlock.append(self.permission_dict[perm] if perm in self.permission_dict else perm)
+            elif data["granted"] is True:
+                permissionsBlock.append(self.permission_dict[perm] if perm in self.permission_dict else perm)
+
+        if len(channelOverwriteBlock) > 0:
+            channelOverwriteBlock = ", ".join(channelOverwriteBlock)
+        if len(permissionsBlock) > 0:
+            permissionsBlock = ", ".join(permissionsBlock)
+
+        if channelOverwriteBlock:
+            embed.add_field(name="Channel Overwrites", value="```\n{}\n```".format(channelOverwriteBlock))
+        if permissionsBlock != "```\n```":
+            embed.description = "```\n{}\n```".format(permissionsBlock)
+        else:
+            embed.description = "Role grants no permissions"
+
+        await self.bot.say(embed=embed)
+
 
 
 def setup(bot):
