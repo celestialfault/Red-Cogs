@@ -81,7 +81,7 @@ class PermissionsBreakdown:
             return await self.bot.say(embed=msg)
 
         # Check for Administrator permissions
-        if ctx.message.server.default_channel.permissions_for(user).administrator is True:
+        if ctx.message.channel.permissions_for(user).administrator is True:
             msg = discord.Embed(description="{} has the Administrator permission, and thus has all permissions by default".format(user.display_name), color=color)
             if user.avatar_url:
                 msg.set_author(name="Permissions for {}".format(user.display_name), icon_url=user.avatar_url)
