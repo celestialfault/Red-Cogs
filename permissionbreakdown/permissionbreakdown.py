@@ -236,23 +236,31 @@ class PermissionsBreakdown:
                 "channelOverwrite": cr
             }
 
-        channelOverwriteBlock = []
+        channelOverwriteGrantBlock = []
+        channelOverwriteDenyBlock = []
         permissionsBlock = []
 
         for perm in permissions:
             data = permissions[perm]
             if data["channelOverwrite"] is not None:
-                channelOverwriteBlock.append(self.permission_dict[perm] if perm in self.permission_dict else perm)
+                if data["channelOverwrite"] == False:
+                    channelOverwriteDenyBlock.append(self.permission_dict[perm] if perm in self.permission_dict else perm)
+                else:
+                    channelOverwriteGrantBlock.append(self.permission_dict[perm] if perm in self.permission_dict else perm)
             elif data["granted"] is True:
                 permissionsBlock.append(self.permission_dict[perm] if perm in self.permission_dict else perm)
 
-        if len(channelOverwriteBlock) > 0:
-            channelOverwriteBlock = ", ".join(channelOverwriteBlock)
+        if len(channelOverwriteGrantBlock) > 0:
+            channelOverwriteGrantBlock = ", ".join(channelOverwriteGrantBlock)
+        if len(channelOverwriteDenyBlock) > 0:
+            channelOverwriteDenyBlock = ", ".join(channelOverwriteDenyBlock)
         if len(permissionsBlock) > 0:
             permissionsBlock = ", ".join(permissionsBlock)
 
-        if channelOverwriteBlock:
-            embed.add_field(name="Channel Overwrites", value="```\n{}\n```".format(channelOverwriteBlock))
+        if channelOverwriteGrantBlock:
+            embed.add_field(name="Granted by Channel Overwrites", value="```\n{}\n```".format(channelOverwriteGrantBlock))
+        if channelOverwriteDenyBlock:
+            embed.add_field(name="Denied by Channel Overwrites", value="```\n{}\n```".format(channelOverwriteDenyBlock))
         if permissionsBlock != "```\n```":
             embed.description = "```\n{}\n```".format(permissionsBlock)
         else:
