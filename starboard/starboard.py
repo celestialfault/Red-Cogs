@@ -263,7 +263,7 @@ class Starboard:
             return False
         server_blacklist = [] if 'blacklist' not in serv else serv['blacklist']
         global_blacklist = self.bot.get_cog("Owner").global_ignores["blacklist"]
-        return user.id in global_blacklist or user.id in server_blacklist:
+        return user.id in global_blacklist or user.id in server_blacklist
 
     async def mod_log_remove(self, server: discord.Server, moderator: discord.User, message: discord.Message):
         mod_channel = await self.get_mod_log(server)
