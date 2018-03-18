@@ -8,7 +8,7 @@
 
 This branch is not officially supported anymore, and as such may not receive updates as often.
 
-I am, however, working on porting these cogs to Red V3 on a [separate branch](https://github.com/notodinair/Red-Cogs/tree/v3);
+I am, however, working on porting these cogs to Red V3 on a [separate repository](https://github.com/notodinair/RedV3-Cogs);
 please feel free to try them out and report any issues you may find!
 
 ```
