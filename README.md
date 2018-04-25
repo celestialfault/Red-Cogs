@@ -4,12 +4,14 @@
   <a href="https://python.org/"><img src="https://img.shields.io/badge/Python-3.5-red.svg"></a>
 </p>
 
+**These cogs are no longer maintained.** This repository is kept as an archive of sorts, to allow others to rip code from it as needed.
+
+Though honestly, I don't know why anyone would want to touch these things with a ten foot pole,
+since most of the codebase here is pretty bad, and almost nearly unmaintainable as-is.
+
+If you're looking for Red V3 cogs however, I'm working on updating these cogs on my [Swift-Cogs](https://github.com/notodinair/Swift-Cogs) repository.
+
 # Installation
-
-This branch is not officially supported anymore, and as such may not receive updates as often.
-
-I am, however, working on porting these cogs to Red V3 on a [separate repository](https://github.com/notodinair/RedV3-Cogs);
-please feel free to try them out and report any issues you may find!
 
 ```
 [p]cog repo add odinair https://github.com/notodinair/Red-Cogs.git
@@ -19,10 +21,9 @@ please feel free to try them out and report any issues you may find!
 
 # Contact
 
-If you've either found a bug or would like to make a suggestion, please [open an issue](https://github.com/notodinair/Red-Cogs/issues/new),
-as this is by far the best way to make sure that I notice it.
+These cogs will not be receiving any updates, not for bugfixes nor new features.
 
-Otherwise, you can contact me on Discord (`odinair#0001`) or Twitter (`@odinair_`).
+If you've found a security issue with these cogs however, please contact me on Discord (`odinair#0001`) - I can be found lurking in the Red support servers most of the time.
 
 # Cogs
 
